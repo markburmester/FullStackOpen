@@ -6,7 +6,7 @@ const DisplayCountries = ({array, handleShowClick, selectedCountry}) =>{
  
   if (selectedCountry){    
     const [weather, setWeather] = useState(null)
-    const API_KEY = "3ab6fc12e907dad1aa52564d1147211e"
+    const API_KEY = import.meta.env.VITE_SOME_KEY
     useEffect(()=>{
         axios 
             .get("https://api.openweathermap.org/data/2.5/weather", 
