@@ -6,6 +6,9 @@ import personServices from './services/persons.js'
 import AddPerson from './components/AddPerson'
 import Filter from './components/Filter'
 import Display from './components/Display'
+import Notification from './components/Notification.jsx'
+
+
 
 const App = () => {
   
@@ -13,6 +16,8 @@ const App = () => {
   
   const [persons, setPersons] = useState([])
   const [searchedPersons, setSearchedPersons] = useState([])
+  const [message, setMessage] = useState({message: null, type: null})
+  
   
   useEffect(() => {
     
@@ -34,6 +39,8 @@ const App = () => {
   const addPerson = (event) =>{
     event.preventDefault()
     const repeatedPersons = persons.filter((x) => x.name === newName)
+
+    //New Person
     if (repeatedPersons.length === 0){
       const personObject = {id:String(persons.length +1), name: newName, number: newNumber}
       personServices
@@ -46,31 +53,50 @@ const App = () => {
           }
           setNewName('')
           setNewNumber('')
+          const newMessage = {message:`${returnedPerson.name} added`, type:'message'}
+          setMessage(newMessage)
+          setTimeout(() => {setMessage({message:null, type:null})}, 5000)
         })      
     }
+
+    //Repeated Person
     else{
       const repeatedPerson = repeatedPersons[0]
       
       const updatedPersonObject = {id: repeatedPerson.id, name: repeatedPerson.name, number: newNumber}
       
       if (window.confirm(`${newName} is already added, replace the old number with a the new one?`)){
+        
         personServices
           .update(repeatedPerson.id, updatedPersonObject)
-          .then(returnedPerson => {
+          .then((returnedPerson) => {
             const newPersons = [...persons]
             
-            newPersons[repeatedPerson.id - 1] = updatedPersonObject
+            newPersons[returnedPerson.id - 1] = updatedPersonObject
             
             setPersons(newPersons)
             if (search.length===0){
               setSearchedPersons(newPersons)
             }
+            const newMessage = {message:`${returnedPerson.name} added`, type:'message'}
+            setMessage(newMessage)
+            setTimeout(() => {setMessage({message:null, type:null})}, 5000)
+            setNewName('')
+            setNewNumber('')
 
           })
-          setNewName('')
-          setNewNumber('')
+        .catch(error=>{
+          console.log("caca")
+          const newMessage = {message:`${repeatedPerson.name} has already been removed from server, reload and try again`, type:'error'}
+          setMessage(newMessage)
+          setTimeout(() => {setMessage({message:null, type:null})}, 5000)
+            
+        })
+            
+        }
+          
       }
-    }
+    
     
   }
 
@@ -107,7 +133,7 @@ const App = () => {
     
     <div>
       <h1>Phonebook</h1>
-
+      <Notification message={message.message} type={message.type}/>
       <Filter searchValue={search} onSearchChange={handleSearchChange}/>
       
       <h2>Add a new</h2>
