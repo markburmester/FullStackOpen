@@ -1,17 +1,18 @@
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personServices from './services/persons.js'
 
-import AddPerson from './components/AddPerson'
-import Filter from './components/Filter'
-import Display from './components/Display'
+import AddPerson from './components/AddPerson.jsx'
+import Filter from './components/Filter.jsx'
+import Display from './components/Display.jsx'
 import Notification from './components/Notification.jsx'
 
 
 
 const App = () => {
-    
+  
+
+  
   const [persons, setPersons] = useState([])
   const [searchedPersons, setSearchedPersons] = useState([])
   const [message, setMessage] = useState({message: null, type: null})
@@ -40,7 +41,7 @@ const App = () => {
 
     //New Person
     if (repeatedPersons.length === 0){
-      const personObject = {id:String(persons.length +1), name: newName, number: newNumber}
+      const personObject = {name: newName, number: newNumber}
       personServices
         .create(personObject)
         .then(returnedPerson => {
@@ -54,14 +55,20 @@ const App = () => {
           const newMessage = {message:`${returnedPerson.name} added`, type:'message'}
           setMessage(newMessage)
           setTimeout(() => {setMessage({message:null, type:null})}, 5000)
-        })      
+        })
+        .catch((error => {
+          const newMessage = {message: error.response.data.error, type:'error'}
+          setMessage(newMessage)
+          setTimeout(() => {setMessage({message:null, type:null})}, 5000)
+          
+        }))   
     }
 
     //Repeated Person
     else{
       const repeatedPerson = repeatedPersons[0]
       
-      const updatedPersonObject = {id: repeatedPerson.id, name: repeatedPerson.name, number: newNumber}
+      const updatedPersonObject = {name: repeatedPerson.name, number: newNumber}
       
       if (window.confirm(`${newName} is already added, replace the old number with a the new one?`)){
         
@@ -70,7 +77,7 @@ const App = () => {
           .then((returnedPerson) => {
             const newPersons = [...persons]
             
-            newPersons[returnedPerson.id - 1] = updatedPersonObject
+            newPersons[newPersons.length - 1] = updatedPersonObject
             
             setPersons(newPersons)
             if (search.length===0){
@@ -83,8 +90,8 @@ const App = () => {
             setNewNumber('')
 
           })
-        .catch(error=>{
-          console.log("caca")
+        .catch(()=>{
+         
           const newMessage = {message:`${repeatedPerson.name} has already been removed from server, reload and try again`, type:'error'}
           setMessage(newMessage)
           setTimeout(() => {setMessage({message:null, type:null})}, 5000)
@@ -118,9 +125,9 @@ const App = () => {
     if (window.confirm(`Delete ${deletedPerson.name}?`)){
     personServices
       .erase(deletedPerson.id)
-      .then((returnedPerson) => {
-        setPersons(persons.filter((x)=>x.id != returnedPerson.id))
-        setSearchedPersons(searchedPersons.filter((x)=>x.id != returnedPerson.id))
+      .then(() => {
+        setPersons(persons.filter((x)=>x.id != deletedPerson.id))
+        setSearchedPersons(searchedPersons.filter((x)=>x.id != deletedPerson.id))
       })}
   
   }
@@ -129,7 +136,7 @@ const App = () => {
 
   return (
     
-    <div class="wrap">
+    <div>
       <h1>Phonebook</h1>
       <Notification message={message.message} type={message.type}/>
       <Filter searchValue={search} onSearchChange={handleSearchChange}/>
