@@ -4,7 +4,7 @@ mongoose.set('strictQuery',false)
 const url = process.env.MONGODB_URI
 
 mongoose.connect(url)
-const noteSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
         name: {
           type: String,
           minLength: 3,
@@ -23,7 +23,7 @@ const noteSchema = new mongoose.Schema({
         }
 })
 
-noteSchema.set('toJSON', {
+personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -31,4 +31,4 @@ noteSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Note', noteSchema)
+module.exports = mongoose.model('Person', personSchema)
