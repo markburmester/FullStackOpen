@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery',false)
-const url = 'mongodb+srv://mburmester:%40Charmander1306@fullstackopen.krotwd.mongodb.net/blogListApp?retryWrites=true&w=majority&appName=FullStackOpen'
 
-//mongoose.connect(url)
 const blogSchema = new mongoose.Schema({
   title: {type: String,
     required: true
