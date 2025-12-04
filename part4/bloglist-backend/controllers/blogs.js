@@ -53,11 +53,19 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.put('/:id', async (request, response) => {
-  const blog = request.body
+blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
+  const body = request.body
+  const user = request.user
   const id = request.params.id
+  const blog = await Blog.findById(id)
+  blog.likes = body.likes
+  console.log(blog)
   const updatedBlog = await Blog.findByIdAndUpdate(id, blog)
-  response.json(updatedBlog)
+  if (updatedBlog) {
+    response.json(updatedBlog)
+  } else {
+    response.status(404).end()
+  }
 })
 
 module.exports = blogsRouter
