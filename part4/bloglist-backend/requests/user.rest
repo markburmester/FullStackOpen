@@ -2,9 +2,19 @@ POST http://localhost:3003/api/users
 Content-Type:application/json
 
 {
-    "username": "root3",
-    "name": "mark",
-    "password": "dtbsdb"
+    "username": "test",
+    "name": "Mark Burmester",
+    "password": "test"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type:application/json
+
+{
+    "username": "hola",
+    "name": "pedro",
+    "password": "1234"
 }
 
 
