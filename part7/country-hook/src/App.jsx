@@ -1,69 +1,58 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import {useEffect, useState} from 'react'
+import axios from "axios";
+import DisplayCountries from './components/DisplayCountries';
+import { useCountry } from './hooks/useCountry';
 
-const useField = (type) => {
-  const [value, setValue] = useState('')
 
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
+function App() {
+  
 
-  return {
-    type,
-    value,
-    onChange
-  }
-}
-
-const useCountry = (name) => {
-  const [country, setCountry] = useState(null)
-
-  useEffect(() => {})
-
-  return country
-}
-
-const Country = ({ country }) => {
-  if (!country) {
-    return null
-  }
-
-  if (!country.found) {
-    return (
-      <div>
-        not found...
-      </div>
+  const [countries, setCountries] = useState([])
+  
+  const [searchedCountries, setSearchedCountries] = useState([])
+  const [searchValue, setSearchValue] = useState('')
+  const countryData = useCountry()
+    
+  
+  useEffect(()=> {
+    axios
+      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
+      .then(
+        (response) => {
+          setCountries(()=> (response.data))
+          setSearchedCountries(()=> (response.data))
+          
+          
+        }
     )
+      
+    
+    
+  }, []);
+
+  console.log(countries)
+ 
+
+  const handleSearchChange = (event) =>{
+    event.preventDefault()
+    setSearchValue(event.target.value)
+    const filtered = countries.filter((x)=>x.name.common.toLowerCase().includes(event.target.value))
+    setSearchedCountries(filtered)  
+    if (filtered.length===1){countryData.selectCountry(filtered[0])}  
+    else{countryData.clearCountry()}
+    
   }
 
-  return (
-    <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
-    </div>
-  )
-}
-
-const App = () => {
-  const nameInput = useField('text')
-  const [name, setName] = useState('')
-  const country = useCountry(name)
-
-  const fetch = (e) => {
-    e.preventDefault()
-    setName(nameInput.value)
+  const handleShowClick = (x) =>{
+    countryData.selectCountry(x)  
   }
-
+  
   return (
     <div>
-      <form onSubmit={fetch}>
-        <input {...nameInput} />
-        <button>find</button>
+      <form>
+        find countries <input value={searchValue} onChange={handleSearchChange}/>
       </form>
-
-      <Country country={country} />
+      <DisplayCountries array={searchedCountries} handleShowClick={handleShowClick} {...countryData}/>
     </div>
   )
 }
