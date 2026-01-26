@@ -3,7 +3,7 @@ const Blog = require("../models/blog");
 const middleware = require("../utils/middleware");
 
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
+  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 }).populate("comments.user", { username: 1, name: 1 });
   response.json(blogs);
 });
 
@@ -16,6 +16,7 @@ blogsRouter.post("/", middleware.userExtractor, async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: user.id,
+    comments: body.comments
   });
 
   const savedBlog = await blog.save();
@@ -41,7 +42,7 @@ blogsRouter.delete(
 );
 
 blogsRouter.get("/:id", async (request, response) => {
-  const blog = await Blog.findById(request.params.id);
+  const blog = await Blog.findById(request.params.id).populate("user", { username: 1, name: 1 }).populate("comments.user", { username: 1, name: 1 });
   if (blog) {
     response.json(blog);
   } else {
@@ -52,10 +53,25 @@ blogsRouter.get("/:id", async (request, response) => {
 blogsRouter.put("/:id", middleware.userExtractor, async (request, response) => {
   const body = request.body;
   const id = request.params.id;
-  const blog = await Blog.findById(id);
-  blog.likes = body.likes;
-  console.log(blog);
-  const updatedBlog = await Blog.findByIdAndUpdate(id, blog);
+  const user = request.user;
+  
+  // Si el último comentario no tiene user, asignar el user actual
+  if (body.comments && body.comments.length > 0) {
+    const lastComment = body.comments[body.comments.length - 1];
+    if (!lastComment.user) {
+      lastComment.user = user.id;
+    }
+  }
+  
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    comments: body.comments
+  };
+  
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true }).populate("user", { username: 1, name: 1 }).populate("comments.user", { username: 1, name: 1 });
   if (updatedBlog) {
     response.json(updatedBlog);
   } else {

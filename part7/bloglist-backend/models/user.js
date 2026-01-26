@@ -10,6 +10,9 @@ const userSchema = new mongoose.Schema({
       ref: "Blog",
     },
   ],
+  comments: [{
+      comment: { type: String, required: true },
+    }]
 });
 
 userSchema.set("toJSON", {
