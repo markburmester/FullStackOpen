@@ -3,7 +3,7 @@ const { startServer } = require('./server')
 
 const start = async () => {
   await connectToDatabase()
-  await startServer()
+  await startServer(4000)
 }
 
 start()
