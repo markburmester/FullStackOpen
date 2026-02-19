@@ -1,0 +1,337 @@
+/* Estilos generales - Diseño Apple */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Contenedor principal */
+.app-container {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.app-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0 0 30px 0;
+  letter-spacing: -0.5px;
+}
+
+/* Mensajes */
+.message {
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+}
+
+.message-success {
+  background-color: #d1f4e0;
+  color: #0b6623;
+  border: none;
+}
+
+.message-error {
+  background-color: #fde8e8;
+  color: #ae0d0d;
+  border: none;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botones */
+button {
+  background-color: #0071e3;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 5px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  letter-spacing: -0.3px;
+}
+
+button:hover {
+  background-color: #0077ed;
+  transform: scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 113, 227, 0.3);
+}
+
+button:active {
+  transform: scale(0.98);
+  background-color: #005cc3;
+}
+
+.button-danger {
+  background-color: #ff3b30;
+}
+
+.button-danger:hover {
+  background-color: #ff453a;
+  box-shadow: 0 10px 30px rgba(255, 59, 48, 0.3);
+}
+
+.button-small {
+  padding: 8px 16px;
+  font-size: 13px;
+  margin: 0 5px 0 0;
+}
+
+.remove-button {
+  padding: 0.5rem;
+  background-color: #a1a1a6;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #1d1d1f;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+}
+
+.form-input {
+  padding: 12px 16px;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #f5f5f7;
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+.form-input::placeholder {
+  color: #a1a1a6;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0071e3;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+/* Información del usuario */
+.user-section {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-info {
+  margin: 0;
+  color: #1d1d1f;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.logout-btn {
+  background-color: #ff3b30;
+  margin: 0;
+}
+
+.logout-btn:hover {
+  background-color: #ff453a;
+  box-shadow: 0 10px 30px rgba(255, 59, 48, 0.3);
+}
+
+/* Blog items */
+.blog-item {
+  background-color: #f5f5f7;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 12px 0;
+  border: 1px solid #e5e5ea;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.blog-item:hover {
+  background-color: white;
+  border-color: #d2d2d7;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.blog-title {
+  margin: 0 0 8px 0;
+  color: #1d1d1f;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.blog-details {
+  color: #1d1d1f;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.blog-details p {
+  margin: 8px 0;
+}
+
+.blog-link {
+  color: #0071e3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.blog-link:hover {
+  text-decoration: underline;
+}
+
+.blog-likes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.like-button {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+/* Encabezados */
+h2 {
+  color: #1d1d1f;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.5px;
+}
+
+h3 {
+  color: #1d1d1f;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  letter-spacing: -0.3px;
+}
+
+/* Secciones */
+.blog-form-section {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.blogs-list {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+/* Togglable */
+.togglable-container {
+  margin: 10px 0;
+}
+
+.togglable-button {
+  padding: 8px 16px;
+  font-size: 13px;
+  margin: 0;
+}
+
+.togglable-content {
+  background-color: white;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 10px;
+  border: 1px solid #e5e5ea;
+}
+
+.togglable-close {
+  padding: 8px 16px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .app-container {
+    border-radius: 16px;
+    padding: 30px 20px;
+  }
+
+  .app-title {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  button {
+    padding: 11px 20px;
+    font-size: 14px;
+  }
+
+  .form-input {
+    padding: 11px 14px;
+    font-size: 16px;
+  }
+
+  .user-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
+}
